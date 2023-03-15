@@ -1,5 +1,6 @@
 {
-	"pages": [{
+	"pages": [
+    {
             "path" : "pages/home/home",
             "style" :                                                                                    
             {
@@ -32,12 +33,35 @@
             
         }
     ],
+    "subPackages": [
+      {"root": "subpkg",
+        "pages": [
+          
+        {
+                    "path" : "goods_detail/goods_detail",
+                    "style" :                                                                                    
+                {
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "goods_list/goods_list",
+                    "style" :                                                                                    
+                {
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+      }
+    ],
 	"globalStyle": {
 	    "navigationBarTextStyle": "white",
 	    "navigationBarTitleText": "小程序商城",
 	    "navigationBarBackgroundColor": "#C00000",
 	    "backgroundColor": "#FFFFFF"
-	  }
+	  },
   "tabBar": {
       "selectedColor": "#C00000",
       "list": [
