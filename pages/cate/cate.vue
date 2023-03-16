@@ -24,7 +24,8 @@
 
 <script setup>
    import { ref } from 'vue'
-   import { onLoad } from '@dcloudio/uni-app'
+   import { onLoad,onShow } from '@dcloudio/uni-app'
+   import { useBadge } from '../../utils/useBadge.js'
    const wh = ref(0)
    const cateList = ref([])
    const cateLevel2 = ref([])
@@ -34,6 +35,9 @@
      const sysInfo = uni.getSystemInfoSync()
      wh.value = sysInfo.windowHeight - 50
      getCateList()
+   })
+   onShow(()=>{
+     useBadge()
    })
    const getCateList = async () => {
        const { data: res } = await uni.$http.get('/api/public/v1/categories')

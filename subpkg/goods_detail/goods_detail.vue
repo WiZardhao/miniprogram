@@ -29,8 +29,10 @@
 </template>
 
 <script setup>
-  import { ref,reactive } from 'vue'
+  import { ref,reactive,watchEffect, watch,computed } from 'vue'
   import { onLoad } from '@dcloudio/uni-app'
+  import { useStore } from 'vuex'
+  const store = useStore()
   const goods_info = ref({})
   const options = reactive([{
       icon: 'shop',
@@ -38,7 +40,7 @@
     }, {
       icon: 'cart',
       text: '购物车',
-      info: 2
+      info: ''
     }])
   const buttonGroup = reactive([{
         text: '加入购物车',
@@ -53,9 +55,17 @@
     ])
   onLoad((options)=>{
     const goods_id = options.goods_id
-    console.log('options:',options)
     getGoodsDetail(goods_id)  
   })
+  const total = computed(()=>{
+    return store.getters['m_cart/total']
+  })
+  watch(total,(newVal)=>{
+    const findResult = options.find(item=>item.text === '购物车')
+    if(findResult){
+      findResult.info = newVal
+    }
+  },{immediate:true})
   function preview(i){
     uni.previewImage({
       current: i,
@@ -69,10 +79,22 @@
         })
       }
   }
+  function buttonClick(e){
+    if(e.content.text === '加入购物车'){
+      const goods = {
+        goods_id:goods_info.value.goods_id,
+        goods_name:goods_info.value.goods_name,
+        goods_price:goods_info.value.goods_price,
+        goods_small_logo:goods_info.value.goods_small_logo,
+        goods_count:1,
+        goods_state:true
+      }
+      store.commit('m_cart/addToCart',goods)
+    }
+  }
   const getGoodsDetail = async (goods_id)=>{
         const { data: res } = await uni.$http.get('/api/public/v1/goods/detail', { goods_id })
         if (res.meta.status !== 200) return uni.$showToast()
-        console.log(res.message)
         // 使用字符串的 replace() 方法，为 img 标签添加行内的 style 样式，从而解决图片底部空白间隙的问题
         res.message.goods_introduce = res.message.goods_introduce.replace(/<img /g, '<img style="display:block;" ').replace(/webp/g, 'jpg')
         goods_info.value = res.message

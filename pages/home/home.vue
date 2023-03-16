@@ -35,8 +35,9 @@
 
 <script setup>
   import { ref,reactive } from 'vue'
-  import { onLoad } from '@dcloudio/uni-app'
+  import { onLoad,onShow } from '@dcloudio/uni-app'
   import MySearch from '../../components/my-search/my-search.vue'
+  import { useBadge } from '../../utils/useBadge.js'
   const swiperList = ref([])
   const navList = ref([])
   const floorList = ref([])
@@ -45,6 +46,9 @@
     getNavList()
     getFloorList()
    })
+  onShow(()=>{
+    useBadge()
+  })
   const getSwiperList = async () => {
       const { data: res } = await uni.$http.get('/api/public/v1/home/swiperdata')
           if (res.meta.status !== 200) {
