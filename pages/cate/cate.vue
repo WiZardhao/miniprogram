@@ -1,5 +1,6 @@
 <template>
-   <view>
+  <my-search @searchClick='gotoSearch'></my-search>
+  <view>
       <view class="scroll-view-container">
        <scroll-view class="left-scroll-view" scroll-y :style="{height: wh + 'px'}">
          <block v-for="(item, i) in cateList" :key="i">
@@ -18,7 +19,7 @@
          </view>
        </scroll-view>
       </view>
-    </view>
+  </view>
 </template>
 
 <script setup>
@@ -31,7 +32,7 @@
    const scrollTop = ref(0)
    onLoad(()=>{
      const sysInfo = uni.getSystemInfoSync()
-     wh.value = sysInfo.windowHeight
+     wh.value = sysInfo.windowHeight - 50
      getCateList()
    })
    const getCateList = async () => {
@@ -39,7 +40,6 @@
            if (res.meta.status !== 200) {
               return uni.$showToast()
             }
-            console.log(res.message)
            cateList.value = res.message
            cateLevel2.value = res.message[0].children
     }
@@ -52,6 +52,11 @@
         uni.navigateTo({
            url: '/subpkg/goods_list/goods_list?cid=' + item.cat_id
          })
+    }
+    function gotoSearch(){
+        uni.navigateTo({
+             url: '/subpkg/search/search'
+           })
     }
 </script>
 

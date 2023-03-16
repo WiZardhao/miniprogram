@@ -1,4 +1,7 @@
 <template>
+  <view class="search-box">
+    <my-search @searchClick='gotoSearch'></my-search>
+  </view>
  <view>
     <swiper :indicator-dots="true" :autoplay="true" :interval="3000" :duration="1000" :circular="true">
       <swiper-item v-for="(item, i) in swiperList" :key="i">
@@ -31,8 +34,9 @@
 </template>
 
 <script setup>
-  import { ref,reactive } from 'vue';
-  import {onLoad } from '@dcloudio/uni-app';
+  import { ref,reactive } from 'vue'
+  import { onLoad } from '@dcloudio/uni-app'
+  import MySearch from '../../components/my-search/my-search.vue'
   const swiperList = ref([])
   const navList = ref([])
   const floorList = ref([])
@@ -60,7 +64,6 @@
         if (res.meta.status !== 200) {
             return uni.$showToast()
             }
-            console.log(res.message)
          res.message.forEach(floor => {
             floor.product_list.forEach(prod => {
               prod.url = '/subpkg/goods_list/goods_list?' + prod.navigator_url.split('?')[1]
@@ -71,9 +74,14 @@
     function navClickHandler(item){
       if(item.name === "分类"){
         uni.switchTab({
-          url:"/pages//cate/cate"
+          url:"/pages/cate/cate"
         })
       }
+    }
+    function gotoSearch(){
+        uni.navigateTo({
+             url: '/subpkg/search/search'
+           })
     }
 </script>
 
@@ -110,5 +118,10 @@ swiper {
 .floor-img-box {
   display: flex;
   padding-left: 10rpx;
+}
+.search-box {
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 </style>
