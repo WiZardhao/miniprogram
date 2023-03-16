@@ -52,7 +52,7 @@
     const { data: res } = await uni.$http.get('/api/public/v1/goods/search', queryObj)
     isLoading.value = false
     callback && callback()
-    if (res.meta.status !== 200) return uni.$showMsg()
+    if (res.meta.status !== 200) return uni.$showToast()
     goodsList.value = [...goodsList.value,...res.message.goods]
     total.value = res.message.total
   }
