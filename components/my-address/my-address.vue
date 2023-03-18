@@ -6,7 +6,7 @@
   <view class="address-info-box" v-else @click="chooseAddress">
     <view class="row1">
       <view class="row1-left">
-        <view class="username">收货人：<text>{{address.username}}</text></view>
+        <view class="username">收货人：<text>{{address.userName}}</text></view>
       </view>
       <view class="row1-right">
         <view class="phone">电话：<text>{{address.telNumber}}</text></view>
@@ -33,13 +33,14 @@
       return store.getters['m_user/addStr']
   })
   const chooseAddress = async ()=>{
-     const [err, succ] = await uni.chooseAddress().catch(err => err)
-        if (err === null && succ.errMsg === 'chooseAddress:ok') {
-          store.commit('m_use/updateAddress',succ)
-        }
-        if (err && err.errMsg === 'chooseAddress:fail auth deny' || err.errMsg === 'chooseAddress:fail authorize no response') {
-          this.reAuth() // 调用 this.reAuth() 方法，向用户重新发起授权申请
-        }
+     const res = await uni.chooseAddress().catch(err=>err)
+     console.log(res)
+     if(res.errMsg === 'chooseAddress:ok'){
+       store.commit('m_user/updateAddress',res)
+     }
+      if (res.errMsg === 'chooseAddress:fail auth deny' || res.errMsg === 'chooseAddress:fail authorize no response') {
+        reAuth() // 调用 this.reAuth() 方法，向用户重新发起授权申请
+      }
   }
   const reAuth = async ()=>{
     const [err2, confirmResult] = await uni.showModal({
@@ -75,7 +76,7 @@
 
 // 渲染收货信息的盒子
 .address-info-box {
-  font-size: 12px;
+  font-size: 14px;
   height: 90px;
   display: flex;
   flex-direction: column;

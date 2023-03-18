@@ -70,8 +70,7 @@
 	    "navigationBarTextStyle": "white",
 	    "navigationBarTitleText": "小程序商城",
 	    "navigationBarBackgroundColor": "#C00000",
-	    "backgroundColor": "#FFFFFF",
-      "requiredPrivateInfos":["chooseAddress"]
+	    "backgroundColor": "#FFFFFF"
 	  },
   "tabBar": {
       "selectedColor": "#C00000",
